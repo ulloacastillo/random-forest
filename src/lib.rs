@@ -36,7 +36,7 @@ pub fn main(json: &JsValue, train_dataset: &JsValue, train_labels: &JsValue, tas
         let mut y: Vec<String> = train_labels.into_serde().unwrap();
 
         let seed: u64 = params.seed;
-        let n_trees: 
+        
 
         let (x_train, y_train, _x_test, _y_test) = utils::split_dataset(&mut x, &mut y, 0.8);
 
