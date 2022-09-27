@@ -35,11 +35,11 @@ class RandomForestClassifier:
         if self.random_forest:
             task_definition = {
                 # local build
-                'wasm_path': "build/random-forest-0.1.0.wasm",
-                'loader_path': "build/random-forest-0.1.0.js",
+                # 'wasm_path': "build/random-forest-0.1.0.wasm",
+                # 'loader_path': "build/random-forest-0.1.0.js",
                 # published build
-                # 'algorithm': "random-forest",
-                # 'algorithm_version': "0.1.0",
+                'algorithm': "random-forest",
+                'algorithm_version': "0.1.2",
                 'params': [self.random_forest, X, [], "predict"]
             }
             result = asyncio.run(main(task_definition))
@@ -51,11 +51,11 @@ class RandomForestClassifier:
         if not self.random_forest:
             task_definition = {
                 # local build
-                'wasm_path': "build/random-forest-0.1.0.wasm",
-                'loader_path': "build/random-forest-0.1.0.js",
+                # 'wasm_path': "build/random-forest-0.1.0.wasm",
+                # 'loader_path': "build/random-forest-0.1.0.js",
                 # published build
-                # 'algorithm': "random-forest",
-                # 'algorithm_version': "0.1.0",
+                'algorithm': "random-forest",
+                'algorithm_version': "0.1.2",
                 'params': [{'n_trees': self.n_estimators, 'min_samples_split': self.min_samples_split, 'max_depth': self.max_depth, 'n_feats': self.n_features, 'seed': self.seed}, X, Y, "train"]
             }
 

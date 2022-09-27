@@ -36,11 +36,12 @@ pub fn main(json: &JsValue, train_dataset: &JsValue, train_labels: &JsValue, tas
         let mut y: Vec<String> = train_labels.into_serde().unwrap();
 
         let seed: u64 = params.seed;
+        let n_trees: 
 
         let (x_train, y_train, _x_test, _y_test) = utils::split_dataset(&mut x, &mut y, 0.8);
 
         // Parameters: n_trees, min_samples_split, max_depth, n_feats
-        let mut rf = random_forest::RandomForest::new(100, 3, 3, 4, seed);
+        let mut rf = random_forest::RandomForest::new(params.n_trees, params.min_samples_split, params.max_depth, params.n_feats, seed);
         
         rf.fit(&x_train, &y_train);
 
