@@ -1,0 +1,16 @@
+---
+version: 1.0
+
+build:
+  compiler: mvrc
+
+package:
+  name: random-forest
+  version: 0.1.0
+  metadata:
+    short_description: 
+    license: ""
+    author: "501"
+    url: ""
+    upstream_url: ""
+    long_description: ./USAGE.md
