@@ -6,9 +6,9 @@ build:
 
 package:
   name: random-forest
-  version: 0.1.0
+  version: 0.1.2
   metadata:
-    short_description: 
+    short_description:
     license: ""
     author: "501"
     url: ""

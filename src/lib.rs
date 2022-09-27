@@ -48,7 +48,7 @@ pub fn main(json: &JsValue, train_dataset: &JsValue, train_labels: &JsValue, tas
         
         let percent = random_forest::accuracy(&y_pred, &y_train);
         
-        JsValue::from_serde(&percent).unwrap()
+        JsValue::from_serde(&rf).unwrap()
     }
 
 
