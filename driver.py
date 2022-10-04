@@ -26,16 +26,15 @@ rf = objects[0]
 
 task_type = "train"  # can be train or predict
 
-par = {'n_trees': 100, 'min_samples_split': 3,
-       'max_depth': 3, 'n_feats': 4, 'seed': 41}
-
+par = {'n_trees': 1000, 'min_samples_split': 3,
+       'max_depth': 10000, 'n_feats': 4, 'seed': 41}
 task_definition = {
     # local build
     # 'wasm_path': "build/random-forest-0.1.0.wasm",
     # 'loader_path': "build/random-forest-0.1.0.js",
     # published build
     'algorithm': "random-forest",
-    'algorithm_version': "0.1.2",
+    'algorithm_version': "0.1.3",
     'params': [par, x, y, task_type]
 }
 

@@ -10,11 +10,12 @@ from sklearn.model_selection import train_test_split
 
 data = load_breast_cancer()
 
-X = list(data.data)
-y = list(data.target)
+X = data.data
+y = list(map(str, data.target))
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.25, random_state=41)
+
 
 # n_estimators=100, min_samples_split=2, max_depth=3, n_features=4, seed=41)
 
@@ -23,8 +24,5 @@ rf = RandomForestClassifier(
     n_estimators=100, min_samples_split=2, max_depth=3, n_features=4, seed=41)
 
 
-rf.fit(list(X_train), list(y_train))
-pred = rf.predict(list(y_test))
-
-print(pred)
-print(y_test)
+rf.fit(X_train.tolist(), y_train)
+#pred = rf.predict(y_test.tolist())

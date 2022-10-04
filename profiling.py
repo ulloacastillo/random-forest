@@ -1,28 +1,41 @@
+import numpy as np
 import pandas as pd
 import pickle
 from motivus.client import Client
 import asyncio
 import time
-from sklearn.datasets import load_breast_cancer
-from sklearn.model_selection import train_test_split
+import random
+from datetime import datetime
 
-data = load_breast_cancer()
 
-X = data.data
-y = data.target
+N_SAMPLES = 10000
+N_FEATS = 100
+N_CLASSES = 20
+DATASET_SIZE = 100
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.25, random_state=41)
+# X = np.random.rand(N_SAMPLES, N_FEATS)
+# y = np.random.randint(N_CLASSES, size=(N_SAMPLES, 1))
+# matrix = np.concatenate((X, y), axis=1)
+# df = pd.DataFrame(matrix)
+# df.to_csv("data.csv")
+
+df = pd.read_csv("data.csv", index_col=0)
+
+X = df.iloc[:, :-1].values.tolist()
+y = list(map(str, df.iloc[:, -1:].values.reshape(N_SAMPLES, ).tolist()))
+
 
 task_type = "train"  # can be train or predict
 
-params = {'n_trees': 100, 'min_samples_split': 3,
-          'max_depth': 3, 'n_feats': 4, 'seed': 41}
+par = {'n_trees': 1, 'min_samples_split': 3,
+       'max_depth': 50, 'n_feats': 10, 'seed': 41}
 
 task_definition = {
-    'algorithm': "random-forest",
-    'algorithm_version': "0.1.2",
-    'params': [params, X, y, task_type]
+    'wasm_path': "build/random-forest-0.1.3.wasm",
+    'loader_path': "build/random-forest-0.1.3.js",
+    # 'algorithm': "random-forest",
+    # 'algorithm_version': "0.1.3",
+    'params': [par, X[:DATASET_SIZE], y[:DATASET_SIZE], task_type]
 }
 
 
@@ -34,4 +47,23 @@ async def main():
     return await task
 
 
+start = time.time()
+
+now = datetime.now()
+dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+
 result = asyncio.run(main())
+
+if task_type == "train":
+    with open('random_forest.pickle', 'wb') as file:
+        pickle.dump(result, file, protocol=pickle.HIGHEST_PROTOCOL)
+
+    print(result)
+
+    exc_time = time.time() - start
+
+    with open("train_times.csv", "a") as file:
+        file.write(
+            f"\n{DATASET_SIZE},{exc_time},{dt_string},{par['n_trees']},{par['min_samples_split']},{par['max_depth']},{par['n_feats']}")
+
+print(f"Execution time: {exc_time} seconds")
