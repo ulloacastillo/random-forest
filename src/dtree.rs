@@ -63,7 +63,15 @@ impl DecisionTreeClassifier  {
         let num_samples = X.len();
         let num_features = X[0].len();
 
-        if num_samples >= self.min_samples_split && curr_depth <= self.max_depth {
+        // allow the tree get deeper as possible
+
+        let depth = std::f32::INFINITY;
+
+        if self.max_depth > 0 {
+            let depth = self.max_depth as f32;
+        }
+
+        if num_samples >= self.min_samples_split && (curr_depth as f32) <= depth {
             let best_split: BestSplitStruct = self.get_best_split(&X, &Y, num_samples, num_features);
             //println!("{:?}, {}", num_samples, curr_depth);
             //println!("{:?}", best_split);

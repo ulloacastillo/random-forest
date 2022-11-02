@@ -12,7 +12,7 @@ async def main(task_definition):
 
 
 class RandomForestClassifier:
-    def __init__(self, model_path=None, n_estimators=100, min_samples_split=2, max_depth=3, n_features=4, seed=41) -> None:
+    def __init__(self, model_path=None, n_estimators=100, min_samples_split=2, max_depth=None, n_features=4, seed=41) -> None:
         if model_path:
             objects = []
             with (open(model_path, "rb")) as f:
@@ -27,7 +27,12 @@ class RandomForestClassifier:
             self.random_forest = None
             self.n_estimators = n_estimators
             self.min_samples_split = min_samples_split
-            self.max_depth = max_depth
+            if max_depth is None:
+                self.max_depth = 0
+
+            else:
+                self.max_depth = max_depth
+
             self.n_features = n_features
             self.seed = seed
 
@@ -35,29 +40,30 @@ class RandomForestClassifier:
         if self.random_forest:
             task_definition = {
                 # local build
-                # 'wasm_path': "build/random-forest-0.1.0.wasm",
-                # 'loader_path': "build/random-forest-0.1.0.js",
+                'wasm_path': "build/random-forest-0.1.4.wasm",
+                'loader_path': "build/random-forest-0.1.4.js",
                 # published build
-                'algorithm': "random-forest",
-                'algorithm_version': "0.1.3",
+                # 'algorithm': "random-forest",
+                # 'algorithm_version': "0.1.3",
                 'params': [self.random_forest, X, [], "predict"]
             }
+
             result = asyncio.run(main(task_definition))
-            print(result)
+            return result
+
         else:
             raise Exception('You cannot predidict without a trained forest')
 
     def fit(self, X, Y):
         if not self.random_forest:
-            print(X)
-            print(Y)
+
             task_definition = {
                 # local build
-                'wasm_path': "build/random-forest-0.1.0.wasm",
-                'loader_path': "build/random-forest-0.1.0.js",
+                'wasm_path': "build/random-forest-0.1.4.wasm",
+                'loader_path': "build/random-forest-0.1.4.js",
                 # published build
-                #'algorithm': "random-forest",
-                #'algorithm_version': "0.1.3",
+                # 'algorithm': "random-forest",
+                # 'algorithm_version': "0.1.3",
                 'params': [{'n_trees': self.n_estimators,
                             'min_samples_split': self.min_samples_split,
                             'max_depth': self.max_depth,
@@ -67,7 +73,7 @@ class RandomForestClassifier:
             }
 
             result = asyncio.run(main(task_definition))
-            print(result)
+
             self.random_forest = result
 
         else:

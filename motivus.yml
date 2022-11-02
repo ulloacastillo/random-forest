@@ -6,9 +6,9 @@ build:
 
 package:
   name: random-forest
-  version: 0.1.3
+  version: 0.1.4
   metadata:
-    short_description:
+    short_description: "allow the tree get deeper as possible"
     license: ""
     author: "501"
     url: ""

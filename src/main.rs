@@ -57,7 +57,7 @@ fn main()  {
     // }
     
     // Parameters n_trees, min_samples_split, max_depth, n_feats
-    let mut rf = random_forest::RandomForest::new(1, 3, 3, 4);
+    let mut rf = random_forest::RandomForest::new(1, 3, 3, 4, 41);
     
     rf.fit(&X_train, &Y_train);
     //println!("{:?}", X_train);
