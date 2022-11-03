@@ -33,8 +33,8 @@ for j in range(3):
                'max_depth': 0, 'n_feats': 10, 'seed': 41}
 
         task_definition = {
-            'wasm_path': "build/random-forest-0.1.4.wasm",
-            'loader_path': "build/random-forest-0.1.4.js",
+            'wasm_path': "build/random-forest-0.1.5.wasm",
+            'loader_path': "build/random-forest-0.1.5.js",
             # 'algorithm': "random-forest",
             # 'algorithm_version': "0.1.3",
             'params': [par, X[:i], y[:i], task_type]

@@ -32,16 +32,16 @@ pub fn split_dataset(X: &mut Vec<Vec<f32>>, Y: &mut Vec<String>, train_size: f32
     
     
     for (i, &idx) in idxs.iter().enumerate(){
-        let xx: Vec<f32> = X[idx].clone();
-        let yy: String = Y[idx].clone();
+        let xx: &Vec<f32> = &X[idx];
+        let yy: &String = &Y[idx];
         
         if i < n_train {
-            X_train.push(xx);
-            Y_train.push(yy);
+            X_train.push(xx.to_vec());
+            Y_train.push(yy.to_string());
         }
         else {
-            X_test.push(xx);
-            Y_test.push(yy);
+            X_test.push(xx.to_vec());
+            Y_test.push(yy.to_string());
         }
 
         
@@ -65,7 +65,7 @@ pub fn accuracy_per_label(Y: &Vec<String>, Y_hat: &Vec<String>) -> Vec<f32> {
             }
         }
 
-        let total_labels = count_vals(&Y, labels[i].clone());
+        let total_labels = count_vals(&Y, &labels[i]);
         let label_acc = c / (total_labels as f32);
         acc.push(label_acc);
     }
@@ -73,10 +73,10 @@ pub fn accuracy_per_label(Y: &Vec<String>, Y_hat: &Vec<String>) -> Vec<f32> {
     acc
 }
 
-pub fn count_vals(arr: &Vec<String>, label: String) -> usize {
+pub fn count_vals(arr: &Vec<String>, label: &String) -> usize {
     let mut c = 0;
     for el in arr.iter() {
-        if el == &label {
+        if el == label {
             c = c + 1;
         }
     }
@@ -104,9 +104,9 @@ pub fn unique_vals_f32(arr: &Vec<f32>) -> Vec<f32> {
 
     u_vals.sort_by(|a, b| a.partial_cmp(b).unwrap());
 
-    let returnded = u_vals.clone();
+    //let returnded = u_vals.clone();
 
-    return returnded;
+    return u_vals;
 }
 
 

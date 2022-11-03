@@ -174,7 +174,7 @@ impl DecisionTreeClassifier  {
         
         for cls in class_labels.iter() {
             
-            let p_cls: f32 = (((utils::count_vals(&Y, cls.to_string()) as i32) as f32) / (Y.len() as i32) as f32) as f32;
+            let p_cls: f32 = (((utils::count_vals(&Y, &cls.to_string()) as i32) as f32) / (Y.len() as i32) as f32) as f32;
             
             
             gini = gini + (p_cls * p_cls);
@@ -192,17 +192,17 @@ impl DecisionTreeClassifier  {
 
         //println!("{:?} -- {:?}", X, Y);
         //println!("{}", Y.len());
-
-        for i in 0..X.clone().len() {
-            let v: Vec<f32> = X[i].clone();
-            let v_y: String = Y[i].clone();
+        let n_rows = X.len();
+        for i in 0..n_rows {
+            let v: &Vec<f32> = &X[i];
+            let v_y: &String = &Y[i];
             if v[feature_index] <= threshold {
-                dataset_left.push(v);
-                y_left.push(v_y);
+                dataset_left.push(v.to_vec());
+                y_left.push(v_y.to_string());
             }
             else {
-                dataset_right.push(v);
-                y_right.push(v_y);
+                dataset_right.push(v.to_vec());
+                y_right.push(v_y.to_string());
             }
         }
         //println!("{:?} -- {:?}", dataset_left, dataset_right);

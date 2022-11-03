@@ -14,26 +14,27 @@ pub fn bootstrap_random_forest(X: &Vec<Vec<f32>>, Y: &Vec<String>, n_features: u
     // Creating features indexes
     let mut ft_ixs: Vec<usize> = vec![];
     let mut rnd_ft_idx: usize;
+    let n_cols = X[0].len();
     for i in 0..n_features {
-        rnd_ft_idx = rng.gen_range(0..X[0].len());
+        rnd_ft_idx = rng.gen_range(0..n_cols);
         while (ft_ixs.contains(&rnd_ft_idx)) {
-            rnd_ft_idx = rng.gen_range(0..X[0].len());
+            rnd_ft_idx = rng.gen_range(0..n_cols);
             
         }
         
         ft_ixs.push(rnd_ft_idx);
     }
     //println!("{:?}", ft_ixs);
-    let n_samples = X.clone().len();
+    let n_samples: usize = X.len();
     for i in 0..n_samples {
-        let rnd_idx = rng.gen_range(0..X.len());
+        let rnd_idx = rng.gen_range(0..n_samples);
 
         let mut X_i: Vec<f32> = vec![];
         for j in 0..n_features {
-            X_i.push(X[rnd_idx][j].clone());
+            X_i.push(X[rnd_idx][j]);
         }
-        X_.push(X_i.clone());
-        y_.push(Y[rnd_idx].clone());
+        X_.push(X_i);
+        y_.push(Y[rnd_idx].to_string());
     }
 
     return (X_, y_)
@@ -41,12 +42,14 @@ pub fn bootstrap_random_forest(X: &Vec<Vec<f32>>, Y: &Vec<String>, n_features: u
 
 pub fn swap_matrix_axes(matrix: &Vec<Vec<String>>) -> Vec<Vec<String>>{
     let mut new_matrix: Vec<Vec<String>> = vec![];
-    for j in 0..matrix[0].len(){
+    let n_rows = matrix.len();
+    let n_cols = matrix[0].len();
+    for j in 0..n_cols{
         let mut aux: Vec<String> = vec![];
-        for i in 0..matrix.len() {
-            let s_: String = matrix[i][j].clone();
+        for i in 0..n_rows {
+            let s_: &String = &matrix[i][j];
             
-            aux.push(s_);
+            aux.push(s_.to_string());
         }
         new_matrix.push(aux);
     }
@@ -66,15 +69,15 @@ pub fn count_val(el: String, Y: &Vec<String>) -> usize{
 
 pub fn get_most_common(Y: &Vec<String>) -> String {
     let mut common_count: usize = 0;
-    let mut common_elem: String = "".to_string();
+    let mut common_elem: &String = &"".to_string();
     for i in 0..Y.len() {
-        let count = count_val(Y[i].clone(), &Y);
+        let count = count_val(Y[i].to_string(), &Y);
         if count > common_count {
             common_count = count;
-            common_elem = Y[i].clone();
+            common_elem = &Y[i];
         }
     }
-    common_elem
+    common_elem.to_string()
 
 }
 
